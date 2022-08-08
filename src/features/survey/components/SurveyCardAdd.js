@@ -4,24 +4,39 @@ import {
     Box,
     Button,
     Dialog,
-    Divider,
-    IconButton,
-    List,
-    ListItem,
-    ListItemText,
-    Slide,
-    Toolbar, Typography
+    Slide, Toolbar, Typography,
 } from "@mui/material";
 import './surveycard.css'
+import CreateDialog from "./CreateDialog";
+import {createTheme, ThemeProvider} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
+
+const theme = createTheme({
+    palette: {
+        light: {
+            main: '#fff'
+        }
+    },
+    typography: {
+        h6: {
+            fontSize: 18,
+            fontWeight: 'bold'
+        },
+        subtitle2: {
+            fontSize: 11,
+            color: 'grey'
+        },
+        body2: {
+            fontSize: 12,
+        }
+    }
+
+})
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-function CloseIcon() {
-    return null;
-}
 
 function SurveyCardAdd() {
     const [open, setOpen] = useState(false)
@@ -34,59 +49,47 @@ function SurveyCardAdd() {
         setOpen(false);
     };
 
-
     return (
-        <Box className={`survey-card-context item-center`}>
+        <Box className={`survey-card-context item-center`} component={`div`}
+            sx={{border:'none'}}
+        >
+
             <Box>
-                <Button sx={{
-                    backgroundColor: 'rgb(142 182 255)'
-                }}
-                        size={`small`}
-                        onClick={handleClickOpen}
+                <img src={`/statics/img/create-blank.svg`}
+                     style={{width: '32px', height: '32px'}}
+                     onClick={handleClickOpen}
+                />
+                <Typography variant={`body2`}
+                            mt={2}
                 >
-                    创建项目
-                </Button>
+                    创建空白项目
+                </Typography>
             </Box>
+            <ThemeProvider theme={theme}>
+
             <Dialog
                 fullScreen
                 open={open}
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{position: 'relative'}}>
+                <AppBar sx={{position: 'relative', userSelect: 'none'}} color={`light`}>
                     <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
-                            <CloseIcon/>
-                        </IconButton>
-                        <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
-                            Sound
+                        <Typography sx={{ml: 2, flex: 1}} variant="body2" component="div">
+                            创建项目
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
+                        <Button autoFocus color="inherit" onClick={handleClose}
+                                variant={`outlined`}
+                                size={`small`}>
+                            关闭
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <List>
-                    <ListItem button>
-                        <ListItemText primary="Phone ringtone" secondary="Titania"/>
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText
-                            primary="Default notification ringtone"
-                            secondary="Tethys"
-                        />
-                    </ListItem>
-                </List>
+                <CreateDialog />
             </Dialog>
+            </ThemeProvider>
         </Box>
     )
-
 }
 
 export default SurveyCardAdd;

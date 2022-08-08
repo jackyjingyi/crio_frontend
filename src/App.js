@@ -10,6 +10,8 @@ import jwt_decode from "jwt-decode"
 import {login, logout} from "./features/user/userSlice";
 import cookie from 'react-cookies'
 import SurveyCardAdd from "./features/survey/components/SurveyCardAdd";
+import SurveyEdition from "./features/survey/components/SurveyEdition";
+import SurveyCenter from "./features/survey/components/SurveyCenter";
 
 const config = conf
 
@@ -78,6 +80,8 @@ function App() {
             <Route path={`/`} element={<Home/>}>
             </Route>
             <Route path={'/survey'} element={<Survey/>}>
+                <Route path={''} element={<SurveyCenter/>}/>
+                <Route path={':surveyID'} element={<SurveyEdition/>}/>
             </Route>
             <Route path={`/user`} element={<User/>}>
                 <Route path={`login`} element={<Login/>}/>
@@ -180,7 +184,6 @@ function Home() {
 }
 
 
-
 function Survey() {
     // 新的标题栏（控制台）
 
@@ -192,11 +195,16 @@ function Survey() {
               alignItems={`stretch`}
               className={`survey-main-panel`}
         >
-            <Grid item xs={2}>
+            <Grid item xs={2} sx={{
+                minHeight: '5vh'
+            }}>
                 tabs
             </Grid>
-            <Grid item xs={10}>
-                <SurveyCardAdd/>
+            <Grid item xs={10} sx={{
+                minHeight: '95vh',
+                paddingTop: '16px'
+            }}>
+                <Outlet/>
             </Grid>
         </Grid>
     )
